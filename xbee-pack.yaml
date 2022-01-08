@@ -1,0 +1,32 @@
+schema-version: 1.0
+
+description: |
+  The Bzip2 package contains programs for compressing and decompressing files. Compressing text files with bzip2 yields a much better compression percentage than with the traditional gzip.
+  Installed programs: bunzip2 (link to bzip2), bzcat (link to bzip2), bzcmp (link to bzdiff), bzdiff, bzegrep (link to bzgrep), bzfgrep (link to bzgrep), bzgrep, bzip2, bzip2recover, bzless (link to bzmore), and bzmore
+  Installed libraries: libbz2.so
+  Installed directory: /usr/share/doc/bzip2-1.0.8
+  Short Descriptions
+    bunzip2: Decompresses bzipped files
+    bzcat: Decompresses to standard output
+    bzcmp: Runs cmp on bzipped files
+    bzdiff: Runs diff on bzipped files
+    bzegrep: Runs egrep on bzipped files
+    bzfgrep: Runs fgrep on bzipped files
+    bzgrep: Runs grep on bzipped files
+    bzip2: Compresses files using the Burrows-Wheeler block sorting text compression algorithm with Huffman coding; the compression rate is better than that achieved by more conventional compressors using “Lempel-Ziv” algorithms, like gzip
+    bzip2recover: Tries to recover data from damaged bzipped files
+    bzless: Runs less on bzipped files
+    bzmore: Runs more on bzipped files
+
+    libbz2: The library implementing lossless, block-sorting data compression, using the Burrows-Wheeler algorithm
+
+builder: ./bzip2-builder
+
+var:
+  version: 1.0.8
+
+
+provision:
+  - copy:
+      builder: bzip2
+      todir: /
