@@ -5,8 +5,9 @@ type: builder
 
 const:
   srcDir: /usr/src
-  exportDir: /opt/bzip2
 
+out:
+  bzip2: /opt/bzip2
 
 provision:
   - url:
@@ -26,12 +27,12 @@ build:
         - make -f Makefile-libbz2_so
         - make clean
         - make
-        - make PREFIX={% exportDir %}/usr install
-        - cp -av libbz2.so.* {% exportDir %}/usr/lib
-        - ln -sv {% exportDir %}/usr/lib/libbz2.so.1.0.8 {% exportDir %}/usr/lib/libbz2.so
-        - cp -v bzip2-shared {% exportDir %}/usr/bin/bzip2
-        - for i in {% exportDir %}/usr/bin/{bzcat,bunzip2}; do ln -sfv {% exportDir %}/usr/bin/bzip2 $i; done
-        - rm -fv {% exportDir %}/usr/lib/libbz2.a
+        - make PREFIX={% bzip2 %}/usr install
+        - cp -av libbz2.so.* {% bzip2 %}/usr/lib
+        - ln -sv {% bzip2 %}/usr/lib/libbz2.so.1.0.8 {% bzip2 %}/usr/lib/libbz2.so
+        - cp -v bzip2-shared {% bzip2 %}/usr/bin/bzip2
+        - for i in {% bzip2 %}/usr/bin/{bzcat,bunzip2}; do ln -sfv {% bzip2 %}/usr/bin/bzip2 $i; done
+        - rm -fv {% bzip2 %}/usr/lib/libbz2.a
       directory: "{% srcDir %}/bzip2-{% version %}"
-  - export: "{% exportDir %}"
+
 

@@ -22,7 +22,7 @@ description: |
 
 builder: ./bzip2-builder
 
-var:
+in:
   version: 1.0.8
 
 
