@@ -1,5 +1,7 @@
 schema-version: 1.0
 
+type: builder
+
 description: |
   The Bzip2 package contains programs for compressing and decompressing files. Compressing text files with bzip2 yields a much better compression percentage than with the traditional gzip.
   Installed programs: bunzip2 (link to bzip2), bzcat (link to bzip2), bzcmp (link to bzdiff), bzdiff, bzegrep (link to bzgrep), bzfgrep (link to bzgrep), bzgrep, bzip2, bzip2recover, bzless (link to bzmore), and bzmore
@@ -20,13 +22,33 @@ description: |
 
     libbz2: The library implementing lossless, block-sorting data compression, using the Burrows-Wheeler algorithm
 
-builder: ./bzip2-builder
-
 in:
   version: 1.0.8
 
-
 provision:
-  - copy:
-      builder: bzip2
-      todir: /
+  - url:
+      from: https://www.sourceware.org/pub/bzip2/bzip2-{% version %}.tar.gz
+      todir: "{% xbeeSrc %}"
+  - url:
+      from: https://www.linuxfromscratch.org/patches/lfs/11.0/bzip2-{% version %}-install_docs-1.patch
+      todir: "{% xbeeSrc %}"
+      unpack: false
+
+build:
+  - shell:
+      cmds:
+        - patch -Np1 -i ../bzip2-{% version %}-install_docs-1.patch
+        - sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
+        - sed -i 's@(PREFIX)/man@(PREFIX)/share/man@g' Makefile
+        - make -f Makefile-libbz2_so
+        - make clean
+        - make 
+        - make PREFIX={% xbeeOut %}/usr install
+        - cp -av libbz2.so.* {% xbeeOut %}/usr/lib
+        - ln -sv {% xbeeOut %}/usr/lib/libbz2.so.1.0.8 {% xbeeOut %}/usr/lib/libbz2.so
+        - cp -v bzip2-shared {% xbeeOut %}/usr/bin/bzip2
+        - for i in {% xbeeOut %}/usr/bin/{bzcat,bunzip2}; do ln -sfv {% xbeeOut %}/usr/bin/bzip2 $i; done
+        - rm -fv {% xbeeOut %}/usr/lib/libbz2.a
+      directory: "{% xbeeSrc %}/bzip2-{% version %}"
+
+
