@@ -45,10 +45,14 @@ build:
         - make 
         - make PREFIX={% xbeeOut %}/usr install
         - cp -av libbz2.so.* {% xbeeOut %}/usr/lib
-        - ln -sv {% xbeeOut %}/usr/lib/libbz2.so.1.0.8 {% xbeeOut %}/usr/lib/libbz2.so
         - cp -v bzip2-shared {% xbeeOut %}/usr/bin/bzip2
-        - for i in {% xbeeOut %}/usr/bin/{bzcat,bunzip2}; do ln -sfv {% xbeeOut %}/usr/bin/bzip2 $i; done
         - rm -fv {% xbeeOut %}/usr/lib/libbz2.a
       directory: "{% xbeeSrc %}/bzip2-{% version %}"
+  - shell:
+      cmd: ln -sv libbz2.so.1.0.8 libbz2.so
+      directory: "{% xbeeOut %}/usr/lib"
+  - shell:
+      cmd: for i in bzcat bunzip2; do ln -sfv bzip2 $i; done
+      directory: "{% xbeeOut %}/usr/bin"
 
 
