@@ -22,37 +22,37 @@ description: |
 
     libbz2: The library implementing lossless, block-sorting data compression, using the Burrows-Wheeler algorithm
 
-in:
+var:
   version: 1.0.8
 
 provision:
   - url:
-      from: https://www.sourceware.org/pub/bzip2/bzip2-{% version %}.tar.gz
-      todir: "{% xbeeSrc %}"
+      from: https://www.sourceware.org/pub/bzip2/bzip2-{{ .version }}.tar.gz
+      todir: "{{ .xbee.src }}"
   - url:
-      from: https://www.linuxfromscratch.org/patches/lfs/11.0/bzip2-{% version %}-install_docs-1.patch
-      todir: "{% xbeeSrc %}"
+      from: https://www.linuxfromscratch.org/patches/lfs/11.0/bzip2-{{ .version }}-install_docs-1.patch
+      todir: "{{ .xbee.src }}"
       unpack: false
 
 build:
   - shell:
       cmds:
-        - patch -Np1 -i ../bzip2-{% version %}-install_docs-1.patch
+        - patch -Np1 -i ../bzip2-{{ .version }}-install_docs-1.patch
         - sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
         - sed -i 's@(PREFIX)/man@(PREFIX)/share/man@g' Makefile
         - make -f Makefile-libbz2_so
         - make clean
         - make 
-        - make PREFIX={% xbeeOut %}/usr install
-        - cp -av libbz2.so.* {% xbeeOut %}/usr/lib
-        - cp -v bzip2-shared {% xbeeOut %}/usr/bin/bzip2
-        - rm -fv {% xbeeOut %}/usr/lib/libbz2.a
-      directory: "{% xbeeSrc %}/bzip2-{% version %}"
+        - make PREFIX={{ .xbee.out }}/usr install
+        - cp -av libbz2.so.* {{ .xbee.out }}/usr/lib
+        - cp -v bzip2-shared {{ .xbee.out }}/usr/bin/bzip2
+        - rm -fv {{ .xbee.out }}/usr/lib/libbz2.a
+      directory: "{{ .xbee.src }}/bzip2-{{ .version }}"
   - shell:
       cmd: ln -sv libbz2.so.1.0.8 libbz2.so
-      directory: "{% xbeeOut %}/usr/lib"
+      directory: "{{ .xbee.out }}/usr/lib"
   - shell:
       cmd: for i in bzcat bunzip2; do ln -sfv bzip2 $i; done
-      directory: "{% xbeeOut %}/usr/bin"
+      directory: "{{ .xbee.out }}/usr/bin"
 
 
