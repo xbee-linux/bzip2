@@ -26,12 +26,9 @@ var:
   version: 1.0.8
 
 provision:
-  - url:
-      from: https://www.sourceware.org/pub/bzip2/bzip2-{{ .version }}.tar.gz
-      todir: "{{ .xbee.src }}"
+  - url: https://www.sourceware.org/pub/bzip2/bzip2-{{ .version }}.tar.gz
   - url:
       from: https://www.linuxfromscratch.org/patches/lfs/11.0/bzip2-{{ .version }}-install_docs-1.patch
-      todir: "{{ .xbee.src }}"
       unpack: false
 
 build:
