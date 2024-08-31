@@ -27,15 +27,15 @@ var:
     version: 1.0.8
 
 provision:
-  - url: https://www.sourceware.org/pub/bzip2/bzip2-{{ .version }}.tar.gz
+  - url: https://www.sourceware.org/pub/bzip2/bzip2-{{ .xbee.version }}.tar.gz
   - url:
-      from: https://www.linuxfromscratch.org/patches/lfs/11.0/bzip2-{{ .version }}-install_docs-1.patch
+      from: https://www.linuxfromscratch.org/patches/lfs/11.0/bzip2-{{ .xbee.version }}-install_docs-1.patch
       unpack: false
 
 build:
   - shell:
       cmds:
-        - patch -Np1 -i ../bzip2-{{ .version }}-install_docs-1.patch
+        - patch -Np1 -i ../bzip2-{{ .xbee.version }}-install_docs-1.patch
         - sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
         - sed -i 's@(PREFIX)/man@(PREFIX)/share/man@g' Makefile
         - make -f Makefile-libbz2_so
@@ -45,7 +45,7 @@ build:
         - cp -av libbz2.so.* {{ .xbee.out }}/usr/lib
         - cp -v bzip2-shared {{ .xbee.out }}/usr/bin/bzip2
         - rm -fv {{ .xbee.out }}/usr/lib/libbz2.a
-      directory: "{{ .xbee.src }}/bzip2-{{ .version }}"
+      directory: "{{ .xbee.src }}/bzip2-{{ .xbee.version }}"
   - shell:
       cmd: ln -sv libbz2.so.1.0.8 libbz2.so
       directory: "{{ .xbee.out }}/usr/lib"
