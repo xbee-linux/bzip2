@@ -32,7 +32,7 @@ provision:
 
 build:
   - shell:
-      cmds:
+      cmd:
         - patch -Np1 -i ../bzip2-{{ .xbee.version }}-install_docs-1.patch
         - sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
         - sed -i 's@(PREFIX)/man@(PREFIX)/share/man@g' Makefile
